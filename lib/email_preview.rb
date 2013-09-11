@@ -18,9 +18,9 @@ module EmailPreview
     def categories
       self.registry.collect {|f| f.category }.uniq
     end
-    def preview(key)
+    def preview(key, params = {})
       EmailPreview.before_preview_hook.call
-      self[key].preview
+      self[key].preview(params)
     end
     def [](key)
       self.registry[key.to_i]

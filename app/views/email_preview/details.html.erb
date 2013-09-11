@@ -26,11 +26,17 @@
     padding: 1px;
   }
 
-  .deliver_form {
+  .deliver_form, .extra_params_form {
     margin-bottom: 0;
     float: right;
   }
-  .deliver_form input {
+
+  .extra_params_form{
+    clear: right;
+    margin-top: 10px;
+  }
+
+  .deliver_form input, .extra_params_form input {
     width: 250px;
   }
 
@@ -41,10 +47,26 @@
     margin-left: 10px
   }
 </style>
+
+<script type="text/javascript">
+  function set_preview_url () {
+    var frame, url;
+    frame = parent.frames['preview'].document;
+    url   = frame.location.origin + frame.location.pathname;
+    document.getElementsByClassName("extra_params_form")[0].action = url;
+    return false;
+  }
+</script>
 <%= form_tag deliver_email_preview_path(params[:id]), :class => 'deliver_form' do %>
   <%= text_field_tag :to, session[:email_preview_to], :placeholder => 'Send this email to me@yourcompany.com' %>
   <button type="submit">Deliver Preview</button>
 <% end %>
+
+<%= form_tag preview_email_preview_path(params[:id]), :class => 'extra_params_form', :target => "preview", :method => :get do %>
+  <%= text_field_tag :extra, nil, :placeholder => 'Extra params (ie. foo=bar&day=monday' %>
+  <button type="submit" onclick="set_preview_url();">Add Params</button>
+<% end %>
+
 <h2>Headers</h2>
 <div class="headers">
 <% @mail.header_fields.each do |header| %>

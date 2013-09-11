@@ -23,3 +23,12 @@ EmailPreview.register 'multipart email (html + text)' do
     end
   end
 end
+
+
+EmailPreview.register 'email with params' do |params|
+  Mail.new do
+    to params[:email]
+    from 'me@foo.com'
+    body "check this out, #{params[:name]}"
+  end
+end
